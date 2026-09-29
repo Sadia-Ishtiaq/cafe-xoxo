@@ -37,7 +37,7 @@ import menuBreakfast from '../assets/breakfast.png'
 import menuSandwich from '../assets/sandwich.png'
 import menuWraps from '../assets/housemade_wraps.png'
 import menuKorean from '../assets/korean_sousine.png'
-import menuAfghan from '../assets/afghan_cousine.png'
+import menuAfghan from '../assets/afghancousine.png'
 
 export const cafeAssets = {
   branding: {

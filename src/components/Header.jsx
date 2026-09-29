@@ -100,67 +100,76 @@ export default function Header({ activePage, setActivePage }) {
         </button>
       </div>
 
-      {/* Fully Visible Mobile Drawer Menu with Z-Index fix */}
+      {/* Fully Opaque Mobile Drawer Menu with Dimmed Backdrop Overlay */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed top-20 left-0 right-0 w-full bg-cafe-espresso-950/98 backdrop-blur-2xl border-b border-white/20 px-4 py-5 space-y-3.5 shadow-2xl z-[99999] max-h-[calc(100vh-80px)] overflow-y-auto animate-in slide-in-from-top-4 duration-300">
-          
-          {/* Navigation Items (Home, Menu, Gallery, Reviews, About Us) */}
-          <div className="space-y-2">
-            {navItems.map((item) => {
-              const Icon = item.icon
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-base font-bold transition-all text-left cursor-pointer ${
-                    activePage === item.id 
-                      ? 'bg-cafe-accent text-cafe-espresso-950 shadow-lg shadow-amber-500/25 border border-amber-300' 
-                      : 'text-stone-200 hover:bg-white/10 hover:text-cafe-accent border border-transparent'
-                  }`}
-                >
-                  <Icon className="w-5 h-5 shrink-0" />
-                  <span>{item.label}</span>
-                </button>
-              )
-            })}
-          </div>
+        <>
+          {/* Dimmed Screen Overlay */}
+          <div 
+            className="md:hidden fixed inset-0 top-20 bg-black/85 z-[99998] transition-opacity"
+            onClick={() => setMobileMenuOpen(false)}
+          />
 
-          {/* Book Table Button inside Mobile Menu */}
-          <div className="pt-2 border-t border-white/10">
-            <button 
-              onClick={() => handleNavClick('book-table')}
-              className={`w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl font-bold text-base shadow-xl transition-all cursor-pointer ${
-                activePage === 'book-table'
-                  ? 'bg-amber-400 text-cafe-espresso-950 ring-2 ring-white/50'
-                  : 'bg-cafe-accent hover:bg-amber-400 text-cafe-espresso-950 shadow-amber-500/25'
-              }`}
-            >
-              <Calendar className="w-5 h-5" />
-              <span>Book Table</span>
-            </button>
-          </div>
+          {/* Solid 100% Non-Transparent Drawer Menu */}
+          <div className="md:hidden fixed top-20 left-0 right-0 w-full bg-[#0F0C0A] border-b-2 border-cafe-accent/40 px-4 py-6 space-y-4 shadow-2xl z-[99999] max-h-[calc(100vh-80px)] overflow-y-auto animate-in slide-in-from-top-4 duration-300">
+            
+            {/* Navigation Items (Home, Menu, Gallery, Reviews, About Us) */}
+            <div className="space-y-2">
+              {navItems.map((item) => {
+                const Icon = item.icon
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-base font-bold transition-all text-left cursor-pointer ${
+                      activePage === item.id 
+                        ? 'bg-cafe-accent text-cafe-espresso-950 shadow-lg shadow-amber-500/25 border border-amber-300' 
+                        : 'text-stone-100 bg-white/5 hover:bg-white/10 hover:text-cafe-accent border border-white/10'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5 shrink-0 text-cafe-accent" />
+                    <span>{item.label}</span>
+                  </button>
+                )
+              })}
+            </div>
 
-          {/* Social Links inside Mobile Drawer */}
-          <div className="pt-3 flex items-center justify-center gap-4 text-xs font-semibold text-stone-300 border-t border-white/10">
-            <a
-              href={cafeAssets.branding.facebookUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer border border-white/15"
-            >
-              <Facebook className="w-4 h-4 text-cafe-accent" /> Facebook
-            </a>
-            <a
-              href={cafeAssets.branding.instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer border border-white/15"
-            >
-              <Instagram className="w-4 h-4 text-cafe-accent" /> Instagram
-            </a>
-          </div>
+            {/* Book Table Button inside Mobile Menu */}
+            <div className="pt-2 border-t border-white/15">
+              <button 
+                onClick={() => handleNavClick('book-table')}
+                className={`w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl font-bold text-base shadow-xl transition-all cursor-pointer ${
+                  activePage === 'book-table'
+                    ? 'bg-amber-400 text-cafe-espresso-950 ring-2 ring-white/50'
+                    : 'bg-cafe-accent hover:bg-amber-400 text-cafe-espresso-950 shadow-amber-500/25'
+                }`}
+              >
+                <Calendar className="w-5 h-5" />
+                <span>Book Table</span>
+              </button>
+            </div>
 
-        </div>
+            {/* Social Links inside Mobile Drawer */}
+            <div className="pt-3 flex items-center justify-center gap-4 text-xs font-semibold text-stone-300 border-t border-white/15">
+              <a
+                href={cafeAssets.branding.facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer border border-white/15"
+              >
+                <Facebook className="w-4 h-4 text-cafe-accent" /> Facebook
+              </a>
+              <a
+                href={cafeAssets.branding.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer border border-white/15"
+              >
+                <Instagram className="w-4 h-4 text-cafe-accent" /> Instagram
+              </a>
+            </div>
+
+          </div>
+        </>
       )}
     </header>
   )
