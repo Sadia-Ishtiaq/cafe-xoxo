@@ -31,10 +31,10 @@ import gallery6 from '../assets/gallery (6).jpg'
 import gallery7 from '../assets/gallery (7).jpg'
 
 // High-Res Menu Pages
-import menuHotDrinks from '../assets/hotdrinks.png'
+import menuHotDrinks from '../assets/hotdrinksnewimage.png'
 import menuColdDrinks from '../assets/colddrinks.png'
 import menuBreakfast from '../assets/breakfast.png'
-import menuSandwich from '../assets/sandwich.png'
+import menuSandwich from '../assets/sandwichh.png'
 import menuWraps from '../assets/housemade_wraps.png'
 import menuKorean from '../assets/korean_sousine.png'
 import menuAfghan from '../assets/afghancousine.png'
