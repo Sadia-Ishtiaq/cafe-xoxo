@@ -19,7 +19,7 @@ export default function About({ setActivePage }) {
           Welcome to Cafe Xoxo
         </h1>
         <p className="text-base text-stone-300 leading-relaxed">
-          Located in the heart of Rooke Street Mall, Devonport, Tasmania.
+          Located in Rooke Street Mall, Devonport, Tasmania.
         </p>
       </div>
 

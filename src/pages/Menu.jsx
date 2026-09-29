@@ -6,6 +6,7 @@ export default function Menu({ setActivePage }) {
   const [activeCategory, setActiveCategory] = useState('all')
   const [activeModalIndex, setActiveModalIndex] = useState(null)
   const [loadedImages, setLoadedImages] = useState({})
+  const [zoomLevel, setZoomLevel] = useState(1)
 
   const categories = [
     { id: 'all', label: 'All Menu Pages (7)' },
@@ -22,16 +23,19 @@ export default function Menu({ setActivePage }) {
 
   const handleOpenModal = (index) => {
     setActiveModalIndex(index)
+    setZoomLevel(1)
   }
 
   const handleCloseModal = () => {
     setActiveModalIndex(null)
+    setZoomLevel(1)
   }
 
   const handleNext = (e) => {
     e.stopPropagation()
     if (activeModalIndex !== null) {
       setActiveModalIndex((activeModalIndex + 1) % filteredPages.length)
+      setZoomLevel(1)
     }
   }
 
@@ -39,7 +43,13 @@ export default function Menu({ setActivePage }) {
     e.stopPropagation()
     if (activeModalIndex !== null) {
       setActiveModalIndex((activeModalIndex - 1 + filteredPages.length) % filteredPages.length)
+      setZoomLevel(1)
     }
+  }
+
+  const toggleZoom = (e) => {
+    e.stopPropagation()
+    setZoomLevel(prev => (prev === 1 ? 1.5 : prev === 1.5 ? 2 : 1))
   }
 
   return (
@@ -148,77 +158,100 @@ export default function Menu({ setActivePage }) {
         })}
       </div>
 
-      {/* FULL-SCREEN LIGHTBOX ZOOM MODAL */}
+      {/* FULL-SCREEN LIGHTBOX ZOOM MODAL WITH SCROLLING & ZOOM CONTROLS */}
       {activeModalIndex !== null && filteredPages[activeModalIndex] && (
         <div 
-          className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-2xl flex flex-col justify-between p-4 sm:p-6 overflow-hidden"
+          className="fixed inset-0 z-[99999] bg-cafe-espresso-950/98 backdrop-blur-2xl flex flex-col justify-between p-3 sm:p-6 overflow-hidden"
           onClick={handleCloseModal}
         >
-          {/* Top Bar */}
+          {/* Top Bar with Zoom Controls */}
           <div 
-            className="w-full max-w-7xl mx-auto flex items-center justify-between text-white border-b border-white/15 pb-4 z-10"
+            className="w-full max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-white border-b border-white/15 pb-3 shrink-0 z-20"
             onClick={(e) => e.stopPropagation()}
           >
             <div>
-              <h2 className="text-xl sm:text-2xl font-serif font-bold text-cafe-accent">
+              <h2 className="text-base sm:text-2xl font-serif font-bold text-cafe-accent">
                 {filteredPages[activeModalIndex].name}
               </h2>
-              <p className="text-xs text-stone-400">
-                Menu Page {activeModalIndex + 1} of {filteredPages.length}
+              <p className="text-[11px] sm:text-xs text-stone-400">
+                Menu Page {activeModalIndex + 1} of {filteredPages.length} — Tap image to zoom ({zoomLevel}x)
               </p>
             </div>
             
-            <button
-              onClick={handleCloseModal}
-              className="px-4 py-2 rounded-full bg-cafe-accent text-cafe-espresso-950 font-bold text-xs flex items-center gap-2 hover:bg-amber-400 transition-colors cursor-pointer shadow-lg"
-            >
-              <X className="w-5 h-5" /> Close Zoom
-            </button>
+            {/* Zoom & Action Controls */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={toggleZoom}
+                className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-cafe-accent hover:text-cafe-espresso-950 text-white font-bold text-xs border border-white/20 transition-all cursor-pointer flex items-center gap-1"
+                title="Toggle Zoom Level"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+                <span>Zoom {zoomLevel}x</span>
+              </button>
+
+              <button
+                onClick={handleCloseModal}
+                className="px-4 py-2 rounded-full bg-cafe-accent text-cafe-espresso-950 font-bold text-xs flex items-center gap-1.5 hover:bg-amber-400 transition-colors cursor-pointer shadow-lg"
+              >
+                <X className="w-4 h-4" /> Close
+              </button>
+            </div>
           </div>
 
-          {/* Main Zoomed Image Container */}
+          {/* Scrollable Image Area */}
           <div 
-            className="relative w-full max-w-6xl mx-auto flex-1 flex items-center justify-center my-2 p-2"
+            className="relative w-full max-w-7xl mx-auto flex-1 overflow-auto my-2 p-2 flex items-center justify-center cursor-zoom-in"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Nav Previous Button */}
             <button
               onClick={handlePrev}
-              className="absolute left-2 sm:left-4 z-20 p-4 rounded-full bg-black/80 hover:bg-cafe-accent hover:text-cafe-espresso-950 text-white transition-colors cursor-pointer border border-white/20 shadow-2xl"
+              className="fixed left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-3 sm:p-4 rounded-full bg-black/80 hover:bg-cafe-accent hover:text-cafe-espresso-950 text-white transition-colors cursor-pointer border border-white/20 shadow-2xl"
               aria-label="Previous Page"
             >
-              <ChevronLeft className="w-7 h-7" />
+              <ChevronLeft className="w-6 h-6 sm:w-7 sm:h-7" />
             </button>
 
-            <img 
-              src={filteredPages[activeModalIndex].image} 
-              alt={filteredPages[activeModalIndex].name} 
-              className="max-h-[78vh] max-w-full object-contain rounded-xl shadow-2xl filter brightness-[1.05] contrast-[1.08] select-none"
-            />
+            {/* High-Res Menu Image with Dynamic Zoom Scale */}
+            <div className="overflow-auto max-h-[75vh] w-full flex justify-center items-start">
+              <img 
+                src={filteredPages[activeModalIndex].image} 
+                alt={filteredPages[activeModalIndex].name} 
+                onClick={toggleZoom}
+                style={{
+                  transform: `scale(${zoomLevel})`,
+                  transformOrigin: 'top center',
+                  transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
+                }}
+                className="max-w-full h-auto object-contain rounded-xl shadow-2xl filter brightness-[1.05] contrast-[1.08] select-none cursor-pointer my-auto"
+              />
+            </div>
 
+            {/* Nav Next Button */}
             <button
               onClick={handleNext}
-              className="absolute right-2 sm:right-4 z-20 p-4 rounded-full bg-black/80 hover:bg-cafe-accent hover:text-cafe-espresso-950 text-white transition-colors cursor-pointer border border-white/20 shadow-2xl"
+              className="fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-3 sm:p-4 rounded-full bg-black/80 hover:bg-cafe-accent hover:text-cafe-espresso-950 text-white transition-colors cursor-pointer border border-white/20 shadow-2xl"
               aria-label="Next Page"
             >
-              <ChevronRight className="w-7 h-7" />
+              <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7" />
             </button>
           </div>
 
-          {/* Bottom Control Bar */}
+          {/* Bottom Bar */}
           <div 
-            className="w-full max-w-7xl mx-auto flex items-center justify-between pt-4 border-t border-white/15 text-xs text-stone-300 z-10"
+            className="w-full max-w-7xl mx-auto flex items-center justify-between pt-3 border-t border-white/15 text-xs text-stone-300 shrink-0 z-20"
             onClick={(e) => e.stopPropagation()}
           >
-            <span className="hidden sm:inline-block text-stone-400 font-medium">
-              Click left / right arrows to navigate between menu pages
+            <span className="text-[11px] sm:text-xs text-stone-400 font-medium">
+              Tap image or click Zoom button to enlarge details
             </span>
 
-            <div className="flex items-center gap-3 ml-auto">
+            <div className="flex items-center gap-2 sm:gap-3 ml-auto">
               <a
                 href={filteredPages[activeModalIndex].image}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/20 transition-all"
+                className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/20 transition-all hidden sm:inline-block"
               >
                 Open Original File
               </a>
@@ -228,9 +261,9 @@ export default function Menu({ setActivePage }) {
                   setActivePage('book-table')
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
-                className="px-6 py-2.5 rounded-full bg-cafe-accent text-cafe-espresso-950 font-bold text-xs flex items-center gap-2 shadow-lg shadow-amber-500/30 cursor-pointer"
+                className="px-5 py-2 rounded-full bg-cafe-accent text-cafe-espresso-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-amber-500/30 cursor-pointer"
               >
-                <Calendar className="w-4 h-4" /> Book Table Now
+                <Calendar className="w-3.5 h-3.5" /> Call To Book
               </button>
             </div>
           </div>

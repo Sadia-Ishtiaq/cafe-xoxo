@@ -20,7 +20,7 @@ export default function Header({ activePage, setActivePage }) {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-cafe-espresso-950/95 backdrop-blur-md border-b border-white/10 w-full overflow-x-hidden transition-all duration-300">
+    <header className="sticky top-0 z-[99990] bg-cafe-espresso-950/95 backdrop-blur-md border-b border-white/10 w-full transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         
         {/* Brand Logo & Name */}
@@ -38,7 +38,7 @@ export default function Header({ activePage, setActivePage }) {
           </span>
         </button>
 
-        {/* Desktop Navigation Links (Kept exactly as it is) */}
+        {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-3 sm:gap-4">
           {navItems.map((item) => (
             <button
@@ -90,7 +90,7 @@ export default function Header({ activePage, setActivePage }) {
           </button>
         </nav>
 
-        {/* Mobile Hamburger Button (Easy 44px Touch Target) */}
+        {/* Mobile Hamburger Button (44px Touch Target) */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-2xl bg-white/10 hover:bg-white/20 text-cafe-accent active:scale-95 transition-all cursor-pointer border border-white/15"
@@ -100,9 +100,9 @@ export default function Header({ activePage, setActivePage }) {
         </button>
       </div>
 
-      {/* Optimized Mobile Drawer Menu */}
+      {/* Fully Visible Mobile Drawer Menu with Z-Index fix */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed top-20 left-0 right-0 bg-cafe-espresso-950/98 backdrop-blur-2xl border-b border-white/15 px-4 py-5 space-y-3.5 shadow-2xl z-50 max-h-[calc(100vh-80px)] overflow-y-auto animate-in slide-in-from-top-4 duration-300">
+        <div className="md:hidden fixed top-20 left-0 right-0 w-full bg-cafe-espresso-950/98 backdrop-blur-2xl border-b border-white/20 px-4 py-5 space-y-3.5 shadow-2xl z-[99999] max-h-[calc(100vh-80px)] overflow-y-auto animate-in slide-in-from-top-4 duration-300">
           
           {/* Navigation Items (Home, Menu, Gallery, Reviews, About Us) */}
           <div className="space-y-2">

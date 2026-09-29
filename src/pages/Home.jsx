@@ -84,18 +84,12 @@ export default function Home({ setActivePage }) {
 
           {/* Story Text, Quote & CTA Column */}
           <div className="lg:col-span-6 space-y-4 sm:space-y-6 w-full order-2 lg:order-2">
-            <div className="space-y-2.5 sm:space-y-3">
-              <span className="badge-amber">
-                <Heart className="w-3.5 h-3.5 fill-current" /> OUR STORY
-              </span>
-
-              <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-cafe-cream-50 leading-tight sm:leading-[1.2] break-words">
-                A Place to Eat, Relax & Connect
-              </h2>
-            </div>
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-cafe-cream-50 leading-tight sm:leading-[1.2] break-words">
+              A Place to Eat, Relax & Connect
+            </h2>
 
             <p className="text-sm sm:text-base md:text-lg text-stone-300 font-sans leading-relaxed">
-              Located in the heart of Devonport's Rooke Street Mall, Cafe Xoxo brings together bold culinary traditions, ST ALi specialty coffee, and genuine Tasmanian warmth. Whether you're dropping by for a morning espresso, sharing lunch with friends, or unwinding under our stained-glass lanterns, every visit is crafted to make you feel right at home.
+              Located in Devonport's Rooke Street Mall, Cafe Xoxo brings together bold culinary traditions, ST ALi specialty coffee, and genuine Tasmanian warmth. Whether you're dropping by for a morning espresso, sharing lunch with friends, or unwinding under our stained-glass lanterns, every visit is crafted to make you feel right at home.
             </p>
 
             <div className="p-4 sm:p-5 rounded-2xl bg-cafe-espresso-900/80 border-l-4 border-cafe-accent text-cafe-accent font-serif text-base sm:text-lg font-bold shadow-md">
